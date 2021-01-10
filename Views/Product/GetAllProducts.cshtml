@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Product>
+<!--Section: Block Content-->
+<section>
+
+    <!-- Grid row -->
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            var photoPath = "~/images/" + (product.ImageUrl ?? "noimage.jpg");
+            <div class="pb-4 10px col-lg-3 col-md-6 offset-md-0 offset-sm-1 col-sm-10 offset-sm-1 my-lg-0 my-2">
+                <div class="card">
+                    <a asp-controller="product" asp-action="getproduct" asp-route-id="@product.Id">
+                        <img class="card-img-top" src="@photoPath" asp-append-version="true">
+                    </a>
+                    
+                    <div class="card-body">
+                        <div class="d-flex align-items-start justify-content-between">
+                            <div class="d-flex flex-column">
+                                <div class="h6 font-weight-bold">@product.Name</div>
+                                <div class="text-muted">$@product.Price </div>
+                            </div>
+                            <div class="btn"><span class="far fa-heart"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        }
+
+
+
+    </div>
+    <!-- Grid row -->
+
+</section>
+<!--Section: Block Content-->
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif
+    }
+
+    body {
+        background: #DCDCDC;
+        
+    }
+
+    .results {
+        font-weight: 600
+    }
+
+    select {
+        border: none;
+        outline: none;
+        padding: 0px 4px;
+        cursor: pointer;
+        background: inherit
+    }
+
+    .card {
+        border: none;
+        cursor: pointer
+    }
+
+        .card:hover {
+            transform: scale(1.08);
+            transition: all 0.4s ease-in-out
+        }
+
+    img {
+        background-color: #fdf8f4;
+        width: 150px;
+        height: 220px;
+        object-fit: contain;
+        padding-top: 10px
+    }
+
+    .card-body {
+        padding: 0.5rem;
+        padding-top: 0.7rem;
+        padding-right: 0.2rem
+    }
+
+    .fa-heart {
+        font-size: 1.2rem
+    }
+
+    .h6 {
+        margin: 0
+    }
+
+    .btn {
+        padding-top: 0
+    }
+
+        .btn:hover {
+            color: #fdaa4b
+        }
+
+    div.text-muted {
+        font-size: 0.9rem
+    }
+</style>

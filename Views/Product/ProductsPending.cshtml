@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Product>
+@inject SignInManager<ApplicationUser> signInManager;
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (signInManager.IsSignedIn(User) && (User.IsInRole("StoreKeeper")))
+        {
+
+            int count = 1;
+            foreach (var product in Model)
+            {
+                <tr>
+                    <th scope="row">@count</th>
+                    <td><a asp-controller="product" asp-action="editproduct" asp-route-id="@product.Id">@product.Name</a></td>
+                    <td><a asp-controller="product" asp-action="editproduct" asp-route-id="@product.Id">@product.Price</a></td>
+                    <td><a asp-controller="product" asp-action="editproduct" asp-route-id="@product.Id">@product.Description</a></td>
+                </tr>
+                count++;
+            }
+
+
+        }
+        @if (signInManager.IsSignedIn(User) && ( User.IsInRole("Manager") || User.IsInRole("ProductManager") || User.IsInRole("Supervisor")))
+        {
+
+            int count = 1;
+            foreach (var product in Model)
+            {
+                <tr>
+                    <th scope="row">@count</th>
+                    <td><a asp-controller="product" asp-action="productsaction" asp-route-id="@product.Id">@product.Name</a></td>
+                    <td><a asp-controller="product" asp-action="productsaction" asp-route-id="@product.Id">@product.Price</a></td>
+                    <td><a asp-controller="product" asp-action="productsaction" asp-route-id="@product.Id">@product.Description</a></td>
+                </tr>
+                count++;
+            }
+
+
+        }
+
+    </tbody>
+</table>
+<style>
+    td a {
+        display: block;
+        width: 100%;
+    }
+</style>

@@ -1,0 +1,160 @@
+﻿@model ProductViewModel
+
+@{
+    ViewBag.Title = "Pending Product";
+    var photoPath = "~/images/" + (Model.Product.ImageUrl ?? "noimage.jpg");
+}
+<!--Section: Block Content-->
+<section class="mb-5">
+    <form enctype="multipart/form-data" asp-controller="Product" asp-action="ProductsAction" method="post" class="mt-3">
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0">
+
+                <div id="mdb-lightbox-ui"></div>
+
+                <div class="mdb-lightbox">
+
+                    <div class="row product-gallery mx-1">
+
+                        <div class="col-12 mb-0">
+                            <figure class="view overlay rounded z-depth-1 main-img">
+                                <img class="card-img-top" src="@photoPath" asp-append-version="true" />
+                            </figure>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                        <input id="txtId" type="text" class="form-control" placeholder="Your Address *" asp-for="@Model.Id" value="@Model.Product.Id" />
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
+                                             class="img-fluid">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"
+                                             class="img-fluid">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                        <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                             class="img-fluid">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="table-responsive">
+                    <table class="table table-sm table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>Price</strong></th>
+                                <td>$@Model.Product.Price</td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>Description </strong></th>
+                                <td>@Model.Product.Description</td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>Delivery</strong></th>
+                                <td>Nigeria, Lagos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                @*<hr>*@
+                <table class="table mt-2">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Admin Name</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Comment</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @{int count = 1; }
+                        @foreach (var actions in Model.Actions)
+                        {
+                            string roleName = "";
+                            if (actions.RoleId == 1)
+                            {
+                                roleName = "StoreKeeper";
+                            }
+                            else if (actions.RoleId == 2)
+                            {
+                                roleName = "SuperVisor";
+                            }
+                            else if (actions.RoleId == 3)
+                            {
+                                roleName = "ProductManager";
+                            }
+                            else if (actions.RoleId == 4)
+                            {
+                                roleName = "Manager";
+                            }
+
+                            <tr>
+                                <th scope="row">@count</th>
+                                <td>@roleName</td>
+                                <td>@actions.ActionPerformed</td>
+                                <td>@actions.Comment</td>
+                                <td>@actions.DateCreated</td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <textarea asp-for="@Model.Comment" placeholder="Add comment?" class="pb-cmnt-textarea"></textarea>
+                <button id="btnAcceptAll" name="button" value="accept" class="btn btn-lg btn-success">Approve</button>
+                <button id="btnRejectAll" name="button" value="reject" class="btn btn-lg btn-danger">Reject</button>
+
+            </div>
+        </div>
+    </form>
+
+</section>
+<!--Section: Block Content-->
+<style>
+    body {
+        background: #DCDCDC;
+    }
+
+    .pb-cmnt-textarea {
+        resize: none;
+        padding: 20px;
+        height: 130px;
+        width: 100%;
+        border: 1px solid #F2F2F2;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('.custom-file-input').on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    });
+
+</script>

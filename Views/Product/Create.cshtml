@@ -1,0 +1,111 @@
+﻿
+@model ProductCreateViewModel
+
+@{
+    ViewBag.Title = "Create Product";
+}
+
+    <form id="CreateProductForm" enctype="multipart/form-data" class="mt-3">
+        <div class="form-group row">
+            <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input id="txtName" style="width:350px;" class="form-control" placeholder="Name" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Price" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input id="txtPrice" style="width:350px;" class="form-control" placeholder="Price" required>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <div class="form-group">
+                    <input type="file" id="txtPhoto" style="width:350px;" class="form-control" accept="image/png, image/jpeg" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Description" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <textarea id="txtDescription" type="text" style="width:350px;" placeholder="Description" required></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Comment" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <textarea id="txtComment" type="text" style="width:350px;" placeholder="Comment" required></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+
+    </form>
+    <style>
+        body {
+            background: #DCDCDC;
+        }
+    </style>
+    <script>
+
+
+        $(document).ready(function () {
+            $("#CreateProductForm").on('submit', function (event) {
+                console.log(event)
+                event.preventDefault();
+                var msg = confirm("Are you sure you want to create this product?");
+                //Serialize the form datas.
+                var fileUpload = $("#txtPhoto").get(0);
+                var files = fileUpload.files;
+                var data = new FormData();
+
+                data.append("Photo", files[0]);
+                data.append("Name", $("#txtName").val());
+                data.append("Price", $("#txtPrice").val());
+                data.append("Comment", $("#txtComment").val());
+                data.append("Description", $("#txtDescription").val());
+
+
+                if (msg === true) {
+
+                    
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Product/Create",
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        async: false,
+                        success: function (response) {
+
+                            var res = response.split("|");
+                            debugger;
+                            if ($.trim(res[0]) === "1") {
+                                //SuccessMessage("#registerForm", "Registration created successfully...");
+                                alert(res[1]);
+                                var location = window.location.origin + "/Product/GetAllProducts";
+                                window.location.href = location;
+                                $("#AppDiv").removeClass("Submitloader");
+                            }
+
+                            else {
+                                $("#AppDiv").removeClass("Submitloader");
+                                //ErrorMessage("#FormCreateNewApplicationInfo", res[1].trim());
+                                alert(res[1]);
+
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>

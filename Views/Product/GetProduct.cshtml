@@ -1,0 +1,107 @@
+﻿@model Product
+@{
+    ViewBag.Title = "Product Details";
+    var photoPath = "~/images/" + (Model.ImageUrl ?? "noimage.jpg");
+}
+<!--Section: Block Content-->
+<section class="mb-5">
+
+    <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0">
+
+            <div id="mdb-lightbox-ui"></div>
+
+            <div class="mdb-lightbox">
+
+                <div class="row product-gallery mx-1">
+
+                    <div class="col-12 mb-0">
+                        <figure class="view overlay rounded z-depth-1 main-img">
+                            <a href="@photoPath"
+                               data-size="710x823">
+                                <img src="@photoPath?? noimage.jpg"
+                                     class="img-fluid z-depth-1" asp-append-version="true">
+                            </a>
+                        </figure>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg"
+                                         class="img-fluid">
+                                    <div class="mask rgba-white-slight"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
+                                         class="img-fluid">
+                                    <div class="mask rgba-white-slight"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"
+                                         class="img-fluid">
+                                    <div class="mask rgba-white-slight"></div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
+                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                         class="img-fluid">
+                                    <div class="mask rgba-white-slight"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Price</strong></th>
+                            <td>$@Model.Price</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Description </strong></th>
+                            <td>@Model.Description</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Delivery</strong></th>
+                            <td>Nigeria, Lagos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+
+            <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
+            <button type="button" class="btn btn-light btn-md mr-1 mb-2">
+                <i class="fas fa-shopping-cart pr-2"></i>Add to cart
+            </button>
+        </div>
+    </div>
+
+</section>
+<!--Section: Block Content-->
+<style>
+    body {
+        background: #DCDCDC;
+        
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        // MDB Lightbox Init
+        $(function () {
+            $("#mdb-lightbox-ui").load("mdb-addons/mdb-lightbox-ui.html");
+        });
+    });
+</script>
