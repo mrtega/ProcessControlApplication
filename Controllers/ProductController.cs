@@ -130,23 +130,32 @@ namespace ProcessControlApplication.Controllers
 
         [Authorize(Roles = "StoreKeeper, ProductManager, Supervisor, Manager")]
         [HttpPost]
-        public async Task<IActionResult> ProductsAction(string button, ProductActionViewModel productActionViewModel)
+        public async Task<IActionResult> ProductsAction(ProductActionViewModel productActionViewModel)
         {
-            if (button == "accept")
-            {
-                productActionViewModel.ActionPerformed = 2;
-            }
-            else
-            {
-                productActionViewModel.ActionPerformed = 3;
-            }
+            string result;
             var user = await userManager.GetUserAsync(User);
             var roles = await userManager.GetRolesAsync(user);
             var role = await roleManager.FindByNameAsync(roles.SingleOrDefault());
 
             var res = await productService.PerformActionOnProduct(productActionViewModel.Id, user.Id, role.Id,
                 productActionViewModel.Comment, (ActionPerformed)productActionViewModel.ActionPerformed);
-            return RedirectToAction("productspending", "product");
+            if (res != null)
+            {
+                if (productActionViewModel.ActionPerformed == 2)
+                {
+                    result = "1|Approval successfull!";
+                }
+                else
+                {
+                    result = "1|Rejection successfull!";
+                }
+                
+            }
+            else
+            {
+                result = "0|Action was not carried out successfully.";
+            }
+            return Json(result);
         }
 
         private string SavePhoto(IFormFile photo)

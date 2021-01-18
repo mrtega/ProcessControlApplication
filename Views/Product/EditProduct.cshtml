@@ -133,7 +133,7 @@
                 <hr>
 
                 <textarea asp-for="@Model.Comment" placeholder="comment?" class="pb-cmnt-textarea"></textarea>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" name="name" value="Save" onclick="return confirm('Are you sure you want update?')" class="btn btn-primary">Update</button>
                 <a asp-action="productspending" asp-controller="product"
                    class="btn btn-primary">Cancel</a>
 

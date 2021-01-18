@@ -6,9 +6,9 @@
 }
 <!--Section: Block Content-->
 <section class="mb-5">
-    <form enctype="multipart/form-data" asp-controller="Product" asp-action="ProductsAction" method="post" class="mt-3">
+    <form id="CreateProductAction" enctype="multipart/form-data"  class="mt-3">
         <div class="row">
-            <div class="col-md-6 mb-4 mb-md-0">
+            <div class="col-4 mb-4 mb-md-0">
 
                 <div id="mdb-lightbox-ui"></div>
 
@@ -25,7 +25,7 @@
                             <div class="row">
                                 <div class="col-3">
                                     <div class="view overlay rounded z-depth-1 gallery-item" style="visibility: hidden;">
-                                        <input id="txtId" type="text" class="form-control" placeholder="Your Address *" asp-for="@Model.Id" value="@Model.Product.Id" />
+                                        <input id="txtId" type="text" class="form-control" placeholder="Your Address *"  value="@Model.Product.Id" />
                                         <div class="mask rgba-white-slight"></div>
                                     </div>
                                 </div>
@@ -57,7 +57,7 @@
                 </div>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-8">
                 <div class="table-responsive">
                     <table class="table table-sm table-borderless mb-0">
                         <tbody>
@@ -125,9 +125,9 @@
 
                 <hr>
 
-                <textarea asp-for="@Model.Comment" placeholder="Add comment?" class="pb-cmnt-textarea"></textarea>
-                <button id="btnAcceptAll" name="button" value="accept" class="btn btn-lg btn-success">Approve</button>
-                <button id="btnRejectAll" name="button" value="reject" class="btn btn-lg btn-danger">Reject</button>
+                <textarea id="txtComment" placeholder="Add comment?" class="pb-cmnt-textarea form-control"></textarea><br>
+                <button id="btnApproveAll"  class="btn btn-sm btn-success">Approve</button>
+                <button id="btnRejectAll"  class="btn btn-sm btn-danger">Reject</button>
 
             </div>
         </div>
@@ -150,11 +150,86 @@
 </style>
 <script>
 
-    $(document).ready(function () {
-        $('.custom-file-input').on("change", function () {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).next('.custom-file-label').html(fileName);
-        });
+    $("#btnApproveAll").on('click', function (event) {
+        event.preventDefault();
+        var msg = confirm("Are you sure you want to approve this product.");
+
+        if (msg === true) {
+
+            var ProductActionViewModel =
+            {
+
+                Comment: $("#txtComment").val(),
+                Id: $("#txtId").val(),
+                ActionPerformed: 2
+            };
+            $(".error").remove();
+            $.post("/Product/ProductsAction",
+                {
+
+                    "productActionViewModel": ProductActionViewModel,
+                },
+                function (response) {
+
+                    var res = response.split("|");
+                    debugger;
+                    if ($.trim(res[0]) === "1") {
+                        alert(res[1]);
+                        var location = window.location.origin + "/Product/ProductsPending";
+                        window.location.href = location;
+                        $("#AppDiv").removeClass("Submitloader");
+                    }
+
+                    else {
+                        $("#AppDiv").removeClass("Submitloader");
+                        //ErrorMessage("#FormCreateNewApplicationInfo", res[1].trim());
+                        alert(res[1]);
+
+                    }
+                });
+
+        }
+    });
+
+    $("#btnRejectAll").on('click', function (event) {
+        event.preventDefault();
+        var msg = confirm("Are you sure you want to reject this product.");
+
+        if (msg === true) {
+
+            var ProductActionViewModel =
+            {
+
+                Comment: $("#txtComment").val(),
+                Id: $("#txtId").val(),
+                ActionPerformed: 3
+            };
+            $(".error").remove();
+            $.post("/Product/ProductsAction",
+                {
+
+                    "productActionViewModel": ProductActionViewModel,
+                },
+                function (response) {
+
+                    var res = response.split("|");
+                    debugger;
+                    if ($.trim(res[0]) === "1") {
+                        alert(res[1]);
+                        var location = window.location.origin + "/Product/ProductsPending";
+                        window.location.href = location;
+                        $("#AppDiv").removeClass("Submitloader");
+                    }
+
+                    else {
+                        $("#AppDiv").removeClass("Submitloader");
+                        //ErrorMessage("#FormCreateNewApplicationInfo", res[1].trim());
+                        alert(res[1]);
+
+                    }
+                });
+
+        }
     });
 
 </script>
